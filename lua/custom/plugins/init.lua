@@ -1,29 +1,37 @@
--- You can add your own plugins here or in other files in this directory!
---  I promise not to create any merge conflicts in this directory :)
---
--- See the kickstart.nvim README for more information
 -- ~/.config/nvim/lua/custom/plugins/init.lua
 return {
-  -- mason installer for LSP servers
+  -- Mason: LSP installer
   {
     'williamboman/mason.nvim',
+    cmd = 'Mason',
     config = function()
       require('mason').setup()
     end,
   },
 
-  -- bridge mason + lspconfig
+  -- Mason-LSPConfig: Bridge between Mason and nvim-lspconfig
   {
     'williamboman/mason-lspconfig.nvim',
     after = 'mason.nvim',
     config = function()
       require('mason-lspconfig').setup {
-        ensure_installed = { 'tsserver', 'eslint' },
+        ensure_installed = {
+          -- Updated LSP server names:
+          'typescript-language-server', -- Official TypeScript LSP via Mason
+          'eslint-lsp', -- Official ESLint LSP via Mason
+        },
+        automatic_setup = true,
       }
     end,
   },
 
-  -- prettier via null-ls
+  -- nvim-lspconfig: Core LSP configuration (dependency for mason-lspconfig)
+  {
+    'neovim/nvim-lspconfig',
+    dependencies = { 'williamboman/mason-lspconfig.nvim' },
+  },
+
+  -- null-ls: For external formatters/linters like Prettier
   {
     'jose-elias-alvarez/null-ls.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
@@ -32,12 +40,9 @@ return {
     end,
   },
 
-  -- extra TS goodies
+  -- typescript.nvim: Enhance TypeScript experience
   {
     'jose-elias-alvarez/typescript.nvim',
     dependencies = { 'neovim/nvim-lspconfig' },
-    config = function()
-      require('custom.ts').setup()
-    end,
   },
 }
