@@ -22,9 +22,9 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { buffer = bufnr, desc = 'Format Document' })
 
   -- Custom setup for specific clients
-  if client.name == 'typescript-language-server' then -- Updated client name
+  if client.name == 'ts_ls' then -- Updated client name
     custom_ts_setup.setup_tsserver_client(client, bufnr)
-  elseif client.name == 'eslint-lsp' then -- Updated client name
+  elseif client.name == 'eslint' then -- Updated client name
     custom_ts_setup.setup_eslint_client(client, bufnr)
   end
 end
